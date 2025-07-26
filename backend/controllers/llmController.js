@@ -7,7 +7,7 @@ module.exports.generateSolution = async (req, res) => {
     if (!prompt) return res.status(400).json({ error: "Prompt is required!" });
     try {
         const messages = [
-            { role: "system", content: "You are a helpful React component generator." },
+            { role: "system", content: "You are a helpful Coder please provide best code" },
             { role: "user", content: prompt }
         ];
 

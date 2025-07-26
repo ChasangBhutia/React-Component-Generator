@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-module.exports.generateToken = (email)=>{
-    return jwt.sign({email}, process.env.JWT_SECRET_KEY);
+module.exports.generateToken = (email,id)=>{
+    return jwt.sign({email,_id:id}, process.env.JWT_SECRET_KEY);
 }

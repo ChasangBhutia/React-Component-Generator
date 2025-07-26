@@ -11,13 +11,14 @@ const highlight = (code, language = "jsx") => {
 };
 
 export default function CodeEditor({ code }) {
+  
   const blocks = extractCodeFromLLMREsponse(code);
 
   return (
     <div className="flex flex-col gap-4">
       {blocks.map((block, index) =>
         block.type === "text" ? (
-          <p key={index} className="text-gray-800 whitespace-pre-wrap">
+          <p key={index} className="text-white whitespace-pre-wrap">
             {block.content}
           </p>
         ) : (
