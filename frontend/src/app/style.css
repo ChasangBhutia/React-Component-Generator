@@ -1,0 +1,28 @@
+@keyframes colorChange {
+  0%   { color: rgb(246, 246, 246); }
+  25%  { color: rgb(202, 200, 200); }
+  50%  { color: rgb(144, 144, 144); }
+  100% { color: rgb(76, 75, 75); }
+}
+
+@keyframes dots {
+  0%   { content: '.'; }
+  25%  { content: '..'; }
+  50%  { content: '...'; }
+  75%  { content: '....'; }
+  100% { content: '.....'; }
+}
+
+.generatingLoading {
+  animation: colorChange 1s infinite;
+  position: relative;
+  margin-right: 30px;
+}
+
+.generatingLoading::after {
+  content: '';
+  animation: dots 1.2s steps(3, end) infinite;
+  position: absolute;
+}
+
+

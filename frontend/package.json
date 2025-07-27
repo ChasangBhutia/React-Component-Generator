@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
     "axios": "^1.11.0",
     "isomorphic-dompurify": "^2.26.0",
     "next": "15.4.3",

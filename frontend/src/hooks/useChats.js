@@ -3,46 +3,50 @@ import { useEffect, useState } from "react";
 import { useSessionContext } from "@/context/SessionContext";
 
 
-const useChats = ()=>{
+const useChats = () => {
 
-    const {setSessionRefresh} = useSessionContext()
+    const { setSessionRefresh } = useSessionContext()
 
     const [chats, setChats] = useState([]);
     const [chatRefresh, setChatRefresh] = useState(1);
-    
-    const createChat = async (chatData)=>{
-        try{
+    const [chatLoading, setChatLoading] = useState(false);
+
+    const createChat = async (chatData) => {
+        setChatLoading(true);
+        try {
             let response = await saveChat(chatData);
-            if(response.data.success){
-                setChatRefresh(chatRefresh+1);
-                setTimeout(()=>{
-                    setSessionRefresh(prev=>{
-                        return prev+1
+            if (response.data.success) {
+                setChatRefresh(chatRefresh + 1);
+                setTimeout(() => {
+                    setSessionRefresh(prev => {
+                        return prev + 1
                     })
-                },5000)
+                }, 5000)
             }
-        }catch(err){
+        } catch (err) {
             console.log("Error saving chat: ", err.message);
+        } finally {
+            setChatLoading(false);
         }
     }
 
-    useEffect(()=>{
-        const fetchChat = async ()=>{
+    useEffect(() => {
+        const fetchChat = async () => {
             const sessionId = localStorage.getItem("sessionId");
-            try{
+            try {
                 let response = await getChats(sessionId);
-                if(response.data.success){
+                if (response.data.success) {
                     setChats(response.data.chats);
                 }
-            }catch(err){
+            } catch (err) {
                 console.log("Error fetching chats: ", err.message);
-                
+
             }
         };
         fetchChat();
-    },[chatRefresh]);
-    
-    return({createChat, chats});
+    }, [chatRefresh]);
+
+    return ({ createChat, chats, chatLoading });
 }
 
 export default useChats;

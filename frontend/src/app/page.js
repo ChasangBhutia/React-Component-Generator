@@ -1,5 +1,6 @@
 "use client";
 
+import "./style.css"
 import { useState, useRef, useEffect } from "react";
 import CodeEditor from "../components/CodeEditor";
 import Navbar from "@/components/Navbar";
@@ -7,16 +8,18 @@ import SideBar from "@/components/SideBar";
 import useChats from "@/hooks/useChats";
 import {useSessionContext} from "@/context/SessionContext";
 import SandpackRenderer from "@/components/SandpackRenderer";
+import Hero from "@/components/Hero";
 
 export default function GeneratePage() {
   const {session} = useSessionContext()
   const [prompt, setPrompt] = useState("");
   const textareaRef = useRef(null);
-  const { createChat } = useChats();
+  const { createChat, chatLoading } = useChats();
   const [preview, setPreview] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPrompt("");
     createChat({ prompt, sessionId: localStorage.getItem("sessionId") })
   };
 
@@ -30,19 +33,15 @@ export default function GeneratePage() {
   }, [prompt]);
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen flex bg-black">
       <SideBar />
       <section className="w-[80vw]">
         <Navbar />
         <section className="px-10 text-white flex flex-col items-center">
           <div
-            style={{
-              scrollbarWidth: "none",         // Firefox
-              msOverflowStyle: "none",        // IE and Edge
-            }}
-            className="overflow-scroll w-[70vw] h-[80vh] p-2 pb-50 pt-10"
+            className="overflow-y-scroll w-[70vw] h-[70vh] p-2 pb-50 pt-10"
           >
-            {session.chats?.length > 0 && (
+            {session.chats?.length > 0 ? (
               session.chats.map((item, index) => (
                 <div key={index}>
                 <section className="text-right w-full">
@@ -53,14 +52,15 @@ export default function GeneratePage() {
                 {preview && <SandpackRenderer code={item?.relatedComponent?.code}/>}
                 </div>
               ))
-            )}
+            ) : <Hero/>}
+            {chatLoading && <h1 className="text-right generatingLoading">Generating</h1>}
 
           </div>
 
           <form className="fixed bottom-5 w-[70vw]" onSubmit={handleSubmit}>
             <textarea
               ref={textareaRef}
-              placeholder="Describe your component..."
+              placeholder={chatLoading ? 'Loading...' : 'Describe your component...'}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               style={{
@@ -74,7 +74,7 @@ export default function GeneratePage() {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 mt-2"
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 mt-2 neon-btn"
             >
               Send
             </button>

@@ -2,11 +2,13 @@
 
 import { Sandpack } from "@codesandbox/sandpack-react";
 import { extractDependencies } from "@/utils/extractDependencies"
+import { extractCodeByLanguage } from "@/utils/extractCodeByLanguage";
 
 export default function StaticPreviewer({ code }) {
 
   const dependencies = extractDependencies(code);
-
+  const {jsx, css, app} = extractCodeByLanguage(code);  
+  
   return (
     <div className="my-6 border rounded-md overflow-hidden">
       <Sandpack
@@ -26,15 +28,10 @@ export default function StaticPreviewer({ code }) {
           showTabs: true,
         }}
         files={{
-          "/App.js": code,
+          "/App.js": {code: jsx},
+          "/style.css":{code: css},
           "/main.js": {
-            code: `
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-
-ReactDOM.render(<App />, document.getElementById("root"));
-            `.trim(),
+            code:app,
             hidden: true,
           },
           "/index.html": {

@@ -9,9 +9,20 @@ exports.saveChat = async (req, res) => {
     const { sessionId, prompt } = req.body;
     if (!sessionId || !prompt) return res.status(400).json({ success: false, errors: "All fields are required" });
     const message = [
-      { role: "system", content: "You are a helpful Coder please provide best code" },
-      { role: "user", content: prompt }
+      {
+        role: "system",
+        content:
+          "You are a professional React component generator. Generate only clean and production-ready React component code. " +
+          "Use only React and CSS with external css and no frameworks. Do not include wrapper files like App, index.js, or render functions. " +
+          "Do not import css in the component file"+
+          "If there are data needed like image or names or anything generate a random data and use for the same"
+        },  
+      {
+        role: "user",
+        content: prompt
+      }
     ];
+
     const response = await callMistral(message);
     if (!response) return res.status(500).json({ success: false, errors: "Internal Server Error" });
 
@@ -25,7 +36,7 @@ exports.saveChat = async (req, res) => {
       component = await componentModel.create({
         user: req.user._id,
         code: extractedCode,
-        title: prompt.slice(0, 50), // Short description based on prompt
+        title: prompt.slice(0, 50),
       });
     }
 
@@ -54,7 +65,7 @@ exports.getChatsBySession = async (req, res) => {
       path: 'relatedComponent',
       model: 'Component'
     });
-    
+
     if (!chats) return res.status(400).json({ success: false, errors: "Chats not found" });
     return res.status(200).json({ success: true, message: "Chat found", chats });
   } catch (err) {

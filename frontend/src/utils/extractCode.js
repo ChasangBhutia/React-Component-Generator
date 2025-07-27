@@ -1,6 +1,4 @@
-// utils/extractCode.js
-
-export function extractCodeFromLLMREsponse(response) {
+export const extractCodeFromLLMResponse = (response)=> {
   const regex = /```(\w+)?\n([\s\S]*?)```/g;
 
   let parts = [];
@@ -35,6 +33,6 @@ export function extractCodeFromLLMREsponse(response) {
       content: response.slice(lastIndex).trim(),
     });
   }
-
+  
   return parts;
 }

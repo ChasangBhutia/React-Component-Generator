@@ -4,15 +4,16 @@ import Prism from "prismjs";
 import "prismjs/themes/prism-okaidia.css";
 import "prismjs/components/prism-jsx";
 import DOMPurify from "isomorphic-dompurify";
-import { extractCodeFromLLMREsponse } from "@/utils/extractCode";
+import { extractCodeFromLLMResponse } from "@/utils/extractCode";
 
 const highlight = (code, language = "jsx") => {
   return Prism.highlight(code, Prism.languages[language] || Prism.languages.jsx, language);
 };
 
 export default function CodeEditor({ code }) {
-  
-  const blocks = extractCodeFromLLMREsponse(code);
+
+  const blocks = extractCodeFromLLMResponse(code);
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -24,13 +25,20 @@ export default function CodeEditor({ code }) {
         ) : (
           <pre
             key={index}
-            className="bg-zinc-800 text-white text-sm p-4 rounded-md w-full overflow-x-auto whitespace-pre"
+            className="bg-zinc-800 text-white text-sm p-4 rounded-md w-full"
           >
-            <code
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(highlight(block.content, block.language)),
-              }}
-            />
+            <header className="flex justify-between mb-2">
+              <h1>{block.language}</h1>
+              <p>Copy</p>
+            </header>
+            <section className="overflow-x-auto whitespace-pre">
+
+              <code
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(highlight(block.content, block.language)),
+                }}
+              />
+            </section>
           </pre>
         )
       )}
