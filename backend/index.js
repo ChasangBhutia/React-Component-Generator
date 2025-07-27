@@ -6,7 +6,6 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 
 const ConnectDB = require("./config/db");
-const llmRoutes = require("./routes/llmRoutes");
 const authRoutes = require("./routes/authRoutes");
 const chatRoutes = require("./routes/chatRoutes")
 const sessionRoutes = require("./routes/sessionRoutes")
@@ -23,7 +22,6 @@ app.use(express.urlencoded({extended:true}))
 
 ConnectDB();
 
-app.use("/api/llm", llmRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/sessions", sessionRoutes);

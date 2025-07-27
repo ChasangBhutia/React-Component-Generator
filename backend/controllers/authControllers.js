@@ -41,3 +41,14 @@ module.exports.logout = (req, res)=>{
     res.clearCookie('token');
     return res.status(200).json({success:true, message:"Logged Out!"});
 }
+
+module.exports.getUser = async (req,res)=>{
+    try{
+        let user = await userModel.findById(req.user._id);
+        if(!user) return res.status(404).json({success:false, errors:"User not found"});
+        return res.status(200).json({success:true, message:"User found", user});
+    }catch(err){
+        console.log("Error finding user: ",err.message);
+        return res.status(400).json({success:false, errors:"Something went wrong"})
+    }
+}

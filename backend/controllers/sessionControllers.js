@@ -1,6 +1,6 @@
 const sessionModel = require("../models/sessionModel");
 
-exports.createSession = async (req, res) => {    
+exports.createSession = async (req, res) => {
     try {
         const session = await sessionModel.create({
             user: req.user._id,
@@ -15,8 +15,8 @@ exports.createSession = async (req, res) => {
 
 exports.getUserAllSessions = async (req, res) => {
     try {
-        const sessions = await sessionModel.find({ user: req.user._id }).sort({ createdAt: -1 });
-        if(!sessions) return res.status(400).json({success:false, errors:"Session not found"});
+        const sessions = await sessionModel.find({ user: req.user._id }).sort({ createdAt: -1 }).populate('chats');
+        if (!sessions) return res.status(400).json({ success: false, errors: "Session not found" });
         return res.status(200).json({ success: true, message: "Session found", sessions });
     } catch (err) {
         return res.status(500).json({ success: false, errors: "Failed to fetch sessions" });
@@ -24,10 +24,16 @@ exports.getUserAllSessions = async (req, res) => {
 };
 
 exports.getUserSession = async (req, res) => {
-    const {sessionId} = req.params;
+    const { sessionId } = req.params;
     try {
-        const session = await sessionModel.findOne({ user: req.user._id,_id:sessionId }).sort({ createdAt: -1 }).populate('chats');
-        if(!session) return res.status(400).json({success:false, errors:"Session not found"});
+        const session = await sessionModel.findOne({ user: req.user._id, _id: sessionId }).sort({ createdAt: -1 }).populate({
+            path: 'chats',
+            populate: {
+                path: 'relatedComponent',
+                model: 'Component',
+            }
+        });
+        if (!session) return res.status(400).json({ success: false, errors: "Session not found" });
         return res.status(200).json({ success: true, message: "Session found", session });
     } catch (err) {
         return res.status(500).json({ success: false, errors: "Failed to fetch sessions" });

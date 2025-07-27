@@ -2,15 +2,14 @@ const componentModel = require("../models/componentModel");
 
 exports.createComponent = async (req, res) => {
     try {
-        const { code, sessionId, name } = req.body;
+        const { code, sessionId } = req.body;
 
-        if (!code || !sessionId || !name) return res.status(400).json({ success: false, errors: "All fields are required" });
+        if (!code || !sessionId) return res.status(400).json({ success: false, errors: "All fields are required" });
 
         const component = await componentModel.create({
             user: req.user._id,
             session: sessionId,
             code,
-            name,
         });
 
         return res.status(201).json({ success: true, message: "Component Created", component });

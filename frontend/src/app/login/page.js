@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { loginUser } from '@/services/authServices';
+import { useAuthContext } from '@/context/AuthContext';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const {login} = useAuthContext();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,15 +17,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        let response = await loginUser(formData);
-        if(response.data.success){
-            alert(response.data.message);
-            router.push('/');
-        }
-    }catch(err){
-        console.log(err.message);
-    }
+    login(formData);
   };
 
   return (

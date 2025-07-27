@@ -1,8 +1,11 @@
 import { getChats, saveChat } from "@/services/chatServices";
 import { useEffect, useState } from "react";
+import { useSessionContext } from "@/context/SessionContext";
 
 
 const useChats = ()=>{
+
+    const {setSessionRefresh} = useSessionContext()
 
     const [chats, setChats] = useState([]);
     const [chatRefresh, setChatRefresh] = useState(1);
@@ -12,6 +15,11 @@ const useChats = ()=>{
             let response = await saveChat(chatData);
             if(response.data.success){
                 setChatRefresh(chatRefresh+1);
+                setTimeout(()=>{
+                    setSessionRefresh(prev=>{
+                        return prev+1
+                    })
+                },5000)
             }
         }catch(err){
             console.log("Error saving chat: ", err.message);

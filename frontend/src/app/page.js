@@ -5,20 +5,19 @@ import CodeEditor from "../components/CodeEditor";
 import Navbar from "@/components/Navbar";
 import SideBar from "@/components/SideBar";
 import useChats from "@/hooks/useChats";
-import useSessions from "@/hooks/useSessions";
+import {useSessionContext} from "@/context/SessionContext";
+import SandpackRenderer from "@/components/SandpackRenderer";
 
 export default function GeneratePage() {
+  const {session} = useSessionContext()
   const [prompt, setPrompt] = useState("");
   const textareaRef = useRef(null);
   const { createChat } = useChats();
-  const { session } = useSessions();
-
-
+  const [preview, setPreview] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     createChat({ prompt, sessionId: localStorage.getItem("sessionId") })
-
   };
 
 
@@ -41,11 +40,18 @@ export default function GeneratePage() {
               scrollbarWidth: "none",         // Firefox
               msOverflowStyle: "none",        // IE and Edge
             }}
-            className="overflow-scroll w-[70vw] h-[70vh] p-2"
+            className="overflow-scroll w-[70vw] h-[80vh] p-2 pb-50 pt-10"
           >
-            {session?.chats?.length > 0 && (
+            {session.chats?.length > 0 && (
               session.chats.map((item, index) => (
-                <CodeEditor key={index} code={item.response} />
+                <div key={index}>
+                <section className="text-right w-full">
+                  <h3 className="ml-auto p-2 rounded-xl bg-zinc-800 my-5 w-fit">{item.prompt}</h3>
+                </section>
+                <CodeEditor code={item.response} />
+                <button onClick={()=>setPreview(!preview)}>Preview</button>
+                {preview && <SandpackRenderer code={item?.relatedComponent?.code}/>}
+                </div>
               ))
             )}
 

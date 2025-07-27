@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { registerUser } from '@/services/authServices';
+import { useAuthContext } from '@/context/AuthContext';
 
 export default function SignupPage() {
-    const router = useRouter();
+    const {signup} = useAuthContext();
     const [formData, setFormData] = useState({
         fullname: '',
         email: '',
@@ -18,17 +17,7 @@ export default function SignupPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            let response = await registerUser(formData);
-            if (response.data.success) {
-                alert(response.data.message);
-                router.push('/');
-            }
-        } catch (err) {
-            console.log(err.message);
-
-        }
-
+        signup(formData);
     };
 
     return (
