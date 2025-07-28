@@ -1,10 +1,12 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from "react";
 import { createSession, getAllSessions, getSession } from "@/services/sessionServices";
+import { useAuthContext } from "./AuthContext";
 
 const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
+  const { refreshUser } = useAuthContext();
   const [session, setSession] = useState({});
   const [allSessions, setAllSessions] = useState([]);
   const [sessionRefresh, setSessionRefresh] = useState(1);
@@ -38,20 +40,23 @@ export const SessionProvider = ({ children }) => {
   }, [sessionRefresh]);
 
   // Fetch current session
-  useEffect(() => {
-    const fetchOne = async () => {
-      const sessionId = localStorage.getItem("sessionId");
-      try {
-        const response = await getSession(sessionId);
-        if (response.data.success) {
-          setSession(response.data.session);
+  if (allSessions.length > 0) {
+    useEffect(() => {
+      const fetchOne = async () => {
+        const sessionId = localStorage.getItem("sessionId");
+        try {
+          const response = await getSession(sessionId);
+          if (response.data.success) {
+            setSession(response.data.session);
+          }
+        } catch (err) {
+          console.error("Error fetching session: ", err.message);
         }
-      } catch (err) {
-        console.error("Error fetching session: ", err.message);
-      }
-    };
-    fetchOne();
-  }, [sessionRefresh]);
+      };
+      fetchOne();
+    }, [sessionRefresh, refreshUser]);
+  }
+
 
   return (
     <SessionContext.Provider

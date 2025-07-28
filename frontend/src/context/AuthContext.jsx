@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { registerUser, loginUser, getUser } from "@/services/authServices";
+import { registerUser, loginUser, getUser, logoutUser } from "@/services/authServices";
 import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
@@ -9,12 +9,14 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const router = useRouter();
+    const [refreshUser, setRefreshUser] = useState(1);
     const [user, setUser] = useState({});
 
     const signup = async (userData) => {
         try {
             let response = await registerUser(userData);
             if (response.data.success) {
+                setRefreshUser(refreshUser+1);
                 alert(response.data.message);
                 router.push('/');
             }
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         try {
             let response = await loginUser(userData);
             if (response.data.success) {
+                setRefreshUser(refreshUser+1);
                 alert(response.data.message);
                 router.push('/');
             }
@@ -48,10 +51,22 @@ export const AuthProvider = ({ children }) => {
             }
         };
         fetchData();
-    },[])
+    },[refreshUser])
+
+    const logout = async ()=>{
+        try{
+            let response = await logoutUser();
+            if(response.data.success){
+                alert(response.data.message);
+            }
+        }catch(err){
+            console.log("Error logging out: ",err.message);
+            
+        }
+    }
 
     return (
-        <AuthContext.Provider value={{login, signup, user}}>
+        <AuthContext.Provider value={{login, signup, user, refreshUser, logout}}>
             {children}
         </AuthContext.Provider>
     )

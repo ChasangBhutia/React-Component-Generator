@@ -21,9 +21,9 @@ export default function SignupPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-            <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-                <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">Sign Up</h2>
+        <div className="flex min-h-screen items-center justify-center bg-zinc-900 px-4">
+            <div className="w-full max-w-md rounded-lg bg-zinc-700 p-8 shadow-md">
+                <h2 className="mb-6 text-2xl font-bold text-center text-white">Sign Up</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
@@ -59,7 +59,7 @@ export default function SignupPage() {
                         Sign Up
                     </button>
                 </form>
-                <p className="mt-4 text-center text-sm text-gray-600">
+                <p className="mt-4 text-center text-sm text-zinc-300">
                     Already have an account?{' '}
                     <a href="/login" className="text-blue-600 hover:underline">
                         Login here

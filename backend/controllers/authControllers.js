@@ -11,7 +11,7 @@ module.exports.registerUser = async (req,res)=>{
         if(existingUser) return res.status(409).json({success:false, errors:"User already exist. Please login."});
         const hashed = await bcrypt.hash(password, 10);
         const newUser = await userModel.create({fullname, email, password:hashed});
-        const token = generateToken(user.email, user._id);
+        const token = generateToken(newUser.email, newUser._id);
         res.cookie('token', token);
         return res.status(201).json({success:true, message:"User Created", newUser});
     }catch(err){
