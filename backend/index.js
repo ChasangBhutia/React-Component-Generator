@@ -14,7 +14,7 @@ const componentRoutes = require("./routes/componentRoutes")
 const app = express();
 app.use(cookieParser())
 app.use(cors({
-    origin:'http://localhost:3000',
+    origin:'https://react-component-generator-five.vercel.app',
     credentials:true
 }))
 app.use(express.json());
