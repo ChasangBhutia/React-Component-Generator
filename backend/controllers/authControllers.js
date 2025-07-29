@@ -13,11 +13,11 @@ module.exports.registerUser = async (req, res) => {
         const newUser = await userModel.create({ fullname, email, password: hashed });
         const token = generateToken(newUser.email, newUser._id);
         res.cookie('token', token, {
-            httpOnly: true, 
-            secure: true, 
-            sameSite: "strict", 
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
             maxAge: 1000 * 60 * 60 * 24 * 7,
-            path:'/'
+            path: '/'
         });
         return res.status(201).json({ success: true, message: "User Created", newUser });
     } catch (err) {
@@ -35,12 +35,12 @@ module.exports.loginUser = async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) return res.status(400).json({ success: false, errors: "Invalid Credentials!" });
         const token = generateToken(user.email, user._id);
-         res.cookie('token', token, {
-            httpOnly: true, 
-            secure: true, 
-            sameSite: "strict", 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
             maxAge: 1000 * 60 * 60 * 24 * 7,
-            path:'/'
+            path: '/'
         });
         return res.status(200).json({ success: true, message: "Logged In", user });
     } catch (err) {
