@@ -15,12 +15,12 @@ export default function Hero() {
     
 
     return (
-        <div className="h-full w-full">
-            <h1 className="text-5xl mb-5 pl-5">Good {greet},</h1>
-            <h1 className="text-5xl mb-20 text-white neon-text pl-5 neon-text-animated">{user.fullname}</h1>
+        <div className="h-full w-full mt-20">
+            <h1 className="pl-0 text-3xl lg:text-5xl mb-5 sm:pl-5">Good {greet},</h1>
+            <h1 className="pl-0 text-3xl lg:text-5xl mb-20 text-white sm:pl-5 neon-text neon-text-animated">{user.fullname}</h1>
             
-            <h2 className="text-3xl mb-5">🚀Generate React Components Instantly with AI🚀</h2>
-            <p className="text-lg">Describe your UI idea in plain English - get clean, ready-to-use React + CSS code in seconds.</p>
+            <h2 className="text-xl lg:text-3xl mb-5">🚀Generate React Components Instantly with AI🚀</h2>
+            <p className="text-sm lg:text-lg">Describe your UI idea in plain English - get clean, ready-to-use React + CSS code in seconds.</p>
         </div>
     )
 }

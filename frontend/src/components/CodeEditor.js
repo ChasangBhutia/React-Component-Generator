@@ -5,6 +5,7 @@ import "prismjs/themes/prism-okaidia.css";
 import "prismjs/components/prism-jsx";
 import DOMPurify from "isomorphic-dompurify";
 import { extractCodeFromLLMResponse } from "@/utils/extractCode";
+import { useState } from "react";
 
 const highlight = (code, language = "jsx") => {
   return Prism.highlight(code, Prism.languages[language] || Prism.languages.jsx, language);
@@ -13,13 +14,14 @@ const highlight = (code, language = "jsx") => {
 export default function CodeEditor({ code }) {
 
   const blocks = extractCodeFromLLMResponse(code);
+  const [copiedIndex, setCopiedIndex] = useState(null);
 
 
   return (
     <div className="flex flex-col gap-4">
       {blocks.map((block, index) =>
         block.type === "text" ? (
-          <p key={index} className="text-white whitespace-pre-wrap">
+          <p key={index} className="text-white my-5 whitespace-pre-wrap">
             {block.content}
           </p>
         ) : (
@@ -29,7 +31,16 @@ export default function CodeEditor({ code }) {
           >
             <header className="flex justify-between mb-2">
               <h1>{block.language}</h1>
-              <p>Copy</p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(block.content);
+                  setCopiedIndex(index);
+                  setTimeout(() => setCopiedIndex(null), 2000);
+                }}
+                className="hover:text-blue-400 text-sm"
+              >
+                {copiedIndex === index ? "Copied!" : "Copy"}
+              </button>
             </header>
             <section className="overflow-x-auto whitespace-pre">
 

@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }) => {
             let response = await logoutUser();
             if(response.data.success){
                 alert(response.data.message);
+                router.push('/login');
             }
         }catch(err){
             console.log("Error logging out: ",err.message);

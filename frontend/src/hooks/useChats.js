@@ -5,14 +5,19 @@ import { useSessionContext } from "@/context/SessionContext";
 
 const useChats = () => {
 
-    const { setSessionRefresh } = useSessionContext()
+    const { allSessions, setSessionRefresh } = useSessionContext()
 
     const [chats, setChats] = useState([]);
     const [chatRefresh, setChatRefresh] = useState(1);
     const [chatLoading, setChatLoading] = useState(false);
 
+
     const createChat = async (chatData) => {
+        if (allSessions.length === 0) {
+            return;
+        }
         setChatLoading(true);
+
         try {
             let response = await saveChat(chatData);
             if (response.data.success) {

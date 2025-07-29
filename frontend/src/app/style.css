@@ -25,4 +25,16 @@
   position: absolute;
 }
 
+.animate-button{
+  position: relative;
+  left: 0px;
+  top: 0px;
+  animation:animateButton 1s infinite  ;
+}
+
+@keyframes animateButton {
+  0%{left:0px}
+  100%{left:100px}
+}
+
 
