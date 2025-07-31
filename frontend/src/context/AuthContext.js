@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }) => {
         try {
             let response = await registerUser(userData);
             if (response.data.success) {
+                console.log(response.data.token);
+                
                 setRefreshUser(refreshUser+1);
                 alert(response.data.message);
                 router.push('/');
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         try {
             let response = await loginUser(userData);
             if (response.data.success) {
+                console.log(response.data.token);
                 setRefreshUser(refreshUser+1);
                 alert(response.data.message);
                 router.push('/');
