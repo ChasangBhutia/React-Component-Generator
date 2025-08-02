@@ -27,7 +27,7 @@ export default function CodeEditor({ code }) {
         ) : (
           <pre
             key={index}
-            className="bg-zinc-800 text-white text-sm p-4 rounded-md w-full"
+            className="p-2 bg-zinc-800 text-white text-sm sm:p-4 rounded-md w-full"
           >
             <header className="flex justify-between mb-2">
               <h1>{block.language}</h1>
