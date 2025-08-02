@@ -12,6 +12,7 @@ const sessionRoutes = require("./routes/sessionRoutes")
 const componentRoutes = require("./routes/componentRoutes")
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(cookieParser())
 app.use(cors({
     origin:'http://localhost:3000',
