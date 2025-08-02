@@ -15,7 +15,7 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(cookieParser())
 app.use(cors({
-    origin:'http://localhost:3000',
+    origin:'https://react-component-generator-five.vercel.app',
     credentials:true
 }))
 app.use(express.json());
