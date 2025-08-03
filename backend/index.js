@@ -15,7 +15,7 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(cookieParser())
 app.use(cors({
-    origin:'https://react-component-generator-five.vercel.app',
+    origin:'react-component-generator-675i3xn27.vercel.app',
     credentials:true
 }))
 app.use(express.json());

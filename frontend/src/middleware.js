@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware(req) {
   try {
-    const token = req.cookies.get("token");
+    const token = req.cookies.get("token")?.value;
     console.log("Token in middleware:", token);
 
     if (req.nextUrl.pathname === "/" && !token) {
