@@ -14,8 +14,14 @@ const componentRoutes = require("./routes/componentRoutes")
 const app = express();
 app.set('trust proxy', 1);
 app.use(cookieParser())
+
+const allowedOrigin =
+    process.env.NODE_ENV === "production"
+        ? process.env.PROD_ORIGIN
+        : process.env.DEV_ORIGIN;
+
 app.use(cors({
-    origin:'react-component-generator-675i3xn27.vercel.app',
+    origin:allowedOrigin,
     credentials:true
 }))
 app.use(express.json());

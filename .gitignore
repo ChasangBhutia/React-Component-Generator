@@ -30,6 +30,9 @@
 **/.env
 **/.env.*.local
 **/.env.local
+frontend/.env.development
+frontend/.env.production
+backend/.env
 
 # Next.js build output
 frontend/.next
